@@ -12,7 +12,7 @@ class Trip(models.Model):
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
     guide = models.ForeignKey(UserAccount, on_delete=CASCADE)
-    budget = models.DecimalField(max_digits=6, decimal_places=2)
+    budget = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     
     def __str__(self):
         return self.trip_title
