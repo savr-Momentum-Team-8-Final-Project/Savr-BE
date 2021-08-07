@@ -55,8 +55,8 @@ INSTALLED_APPS = [
 
     # Project-specific
     'accounts',
-    'travel',
     'trip',
+    'expenses',
 ]
 
 MIDDLEWARE = [
