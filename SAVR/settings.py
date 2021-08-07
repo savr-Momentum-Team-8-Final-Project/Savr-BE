@@ -53,9 +53,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_extensions',
 
-
-
-    ### project
+    # Project-specific
+    'accounts',
     'travel',
 ]
 
@@ -151,7 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ### Custom user model
 
-# AUTH_USER_MODEL = 'accounts.UserAccount'
+AUTH_USER_MODEL = 'accounts.UserAccount'
+
 
 INTERNAL_IPS = [
     # ...
