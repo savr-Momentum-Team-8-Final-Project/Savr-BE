@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls') ),
+    path('api/expenses/', include('expenses.urls') ),
     path('api/trip/', include('trip.urls') ),
     ## djoser start 
     path("auth/", include("djoser.urls")),

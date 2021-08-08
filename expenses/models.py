@@ -7,7 +7,7 @@ from datetime import date
 # Create your models here.
 class Expense(models.Model):
     expense_title = models.CharField(max_length=100)
-    amount = models.IntegerField()
+    amount = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places= 2)
     note = models.TextField(blank=True)
     trip = models.ForeignKey(Trip, on_delete=CASCADE)
@@ -20,7 +20,7 @@ class Expense(models.Model):
         ('grocery', 'Grocery'),
         ('other', 'Other'),
     ]
-    categoty = models.CharField(
+    category = models.CharField(
         max_length=10,
         choices=CATEGORY_CHOICES
     )
