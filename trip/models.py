@@ -9,8 +9,8 @@ class Trip(models.Model):
     trip_title = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    start_date = models.DateField(default=date.today)
-    end_date = models.DateField(default=date.today)
+    start_date = models.DateField()
+    end_date = models.DateField()
     guide = models.ForeignKey(UserAccount, on_delete=CASCADE)
     budget = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     
