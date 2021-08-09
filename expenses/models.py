@@ -14,8 +14,9 @@ class Expense(models.Model):
     date = models.DateField(blank=True, null=True)
     ## category drop down menu
     CATEGORY_CHOICES= [
-        ('restaraunt', 'Restaraunt'),
-        ('flight', 'Flight'),
+        ('lodging', 'Lodging'),
+        ('food', 'Food'),
+        ('transportation', 'transportation'),
         ('ticket', 'Ticket'), 
         ('grocery', 'Grocery'),
         ('other', 'Other'),
