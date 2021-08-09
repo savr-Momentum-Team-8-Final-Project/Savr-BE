@@ -6,12 +6,13 @@ from trip.serializers import TripCreateSerializer, TripListSerializer, TripDetai
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import DestroyAPIView, RetrieveUpdateAPIView
 
 
 
 class TripCreate(generics.CreateAPIView):
     queryset = Trip.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = ( IsAuthenticated, )
     serializer_class = TripCreateSerializer
 
 
@@ -19,12 +20,20 @@ class TripCreate(generics.CreateAPIView):
 class TripList(generics.ListAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripListSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = ( AllowAny, )
     filter_backends = (filters.SearchFilter, filters.OrderingFilter)
     search_fields = [ 'trip_title', 'city', 'state,' ]
 
 
 class TripDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Trip.objects.all()
-    permission_classes = (TripIsOwnerOrReadOnly, )
+    permission_classes = ( TripIsOwnerOrReadOnly, )
     serializer_class = TripDetailSerialzier
+
+class TripDelete(DestroyAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripCreateSerializer
+    permission_classes = ( TripIsOwnerOrReadOnly, )
+
+
+

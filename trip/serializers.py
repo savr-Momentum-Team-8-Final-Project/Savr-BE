@@ -25,6 +25,11 @@ trip_detail_url = HyperlinkedIdentityField(
         lookup_field='pk'
     )
 
+trip_delete_url = HyperlinkedIdentityField(
+        view_name='trip_delete',
+        lookup_field='pk'
+    )
+
 
 class TripListSerializer(serializers.ModelSerializer):
     guide = SerializerMethodField()
@@ -35,7 +40,7 @@ class TripListSerializer(serializers.ModelSerializer):
     def get_guide(self,obj):
         return str(obj.guide.name)
 
-    
+
 class TripDetailSerialzier(serializers.ModelSerializer):
     guide = SerializerMethodField()
     expenses = SerializerMethodField()
