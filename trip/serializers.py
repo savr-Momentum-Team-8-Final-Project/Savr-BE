@@ -1,8 +1,8 @@
 from expenses.serializers import NoLinkExpenseListSerializer
 from rest_framework import serializers
 from trip.models import Trip
-from rest_framework.serializers import SerializerMethodField
 from expenses.models import Expense
+from rest_framework.serializers import HyperlinkedIdentityField, SerializerMethodField
 
 
 
@@ -19,6 +19,11 @@ class TripCreateSerializer(serializers.ModelSerializer):
             'guide',
             'budget'
             ]
+
+trip_detail_url = HyperlinkedIdentityField(
+        view_name='trip_detail',
+        lookup_field='pk'
+    )
 
 
 class TripListSerializer(serializers.ModelSerializer):
@@ -56,6 +61,11 @@ class TripDetailSerialzier(serializers.ModelSerializer):
         e__qs = Expense.objects.filter(trip_id=obj.id)
         expenses = NoLinkExpenseListSerializer(e__qs, many=True).data
         return expenses
+
+
+
+
+
 
 
 
