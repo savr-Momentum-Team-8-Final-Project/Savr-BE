@@ -16,7 +16,7 @@ class Expense(models.Model):
     CATEGORY_CHOICES= [
         ('lodging', 'Lodging'),
         ('food', 'Food'),
-        ('transportation', 'transportation'),
+        ('trans', 'transportation'),
         ('ticket', 'Ticket'), 
         ('grocery', 'Grocery'),
         ('other', 'Other'),
