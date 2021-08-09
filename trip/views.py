@@ -2,7 +2,7 @@ from trip.permissions import TripIsOwnerOrReadOnly
 from rest_framework import status
 from rest_framework.response import Response
 from trip.models import Trip
-from trip.serializers import TripCreateSerializer, TripListSerializer, TripDetailSerialzier
+from trip.serializers import TripCreateSerializer, TripListSerializer, TripDetailSerialzier, TripUpdateSerializer
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -35,5 +35,8 @@ class TripDelete(DestroyAPIView):
     serializer_class = TripCreateSerializer
     permission_classes = ( TripIsOwnerOrReadOnly, )
 
-
+class TripUpdate(RetrieveUpdateAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripUpdateSerializer
+    permission_classes =  ( TripIsOwnerOrReadOnly, )
 
