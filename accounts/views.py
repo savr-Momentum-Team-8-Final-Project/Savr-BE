@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
+from rest_framework.generics import RetrieveUpdateAPIView
 User = get_user_model()
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions 
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework import status
-from .serializers import UserAccountSerializer
+from .serializers import UserAccountSerializer, PhotoSerializer
+from .models import UserAccount
 
 
 # Create your views here.
@@ -41,20 +43,25 @@ class SignupView(APIView):
 
 
 
-class UserAccountView(APIView):
+class UserAccountView(RetrieveUpdateAPIView):
     permission_classes = [permissions.AllowAny]
-    # MultiPartParser AND FormParser
-    # https://www.django-rest-framework.org/api-guide/parsers/#multipartparser
-    # "You will typically want to use both FormParser and MultiPartParser
-    # together in order to fully support HTML form data."
-    parser_classes = (MultiPartParser, FormParser)
-    def post(self, request, *args, **kwargs):
+    
+    parser_classes = [FileUploadParser]
+
+    def patch(self, request, *args, **kwargs):
+        if "file" in request.data:
+            file=request.data["file"]
+            user = request.user
+            user.profile_pic.save(file.name, file, save=True)
+            file_serializer = PhotoSerializer(user)
+        else:    
             file_serializer = UserAccountSerializer(data=request.data)
-            if file_serializer.is_valid():
-                    file_serializer.save()
-                    return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                    return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

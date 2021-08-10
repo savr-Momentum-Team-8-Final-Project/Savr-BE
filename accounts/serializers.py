@@ -2,8 +2,8 @@ from rest_framework import serializers
 from .models import UserAccount
 
 
-class UserAccountSerializer(serializers.ModelSerializer):
-
+class PhotoSerializer(serializers.ModelSerializer):
+    profile_pic = serializers.ImageField()
 
     class Meta():
         model = UserAccount
@@ -11,3 +11,12 @@ class UserAccountSerializer(serializers.ModelSerializer):
             'profile_pic',
         ]
 
+
+class UserAccountSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = UserAccount
+        fields = [
+            "email",
+            "name",
+            "profile_pic"
+        ]
