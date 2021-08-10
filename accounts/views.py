@@ -1,17 +1,18 @@
 from django.contrib.auth import get_user_model
+from rest_framework.exceptions import ParseError
 from rest_framework.generics import RetrieveUpdateAPIView
 User = get_user_model()
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import permissions 
+from rest_framework import permissions, serializers
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework import status
-from .serializers import UserAccountSerializer, PhotoSerializer
+from .serializers import UserAccountSerializer
 from .models import UserAccount
 
 
 # Create your views here.
-# 
+#
 
 class SignupView(APIView):
     permission_classes = (permissions.AllowAny, )
@@ -28,7 +29,7 @@ class SignupView(APIView):
         if password == password2:
             if User.objects.filter(email=email).exists():
                 return Response({'error': 'Email already exists'})
-            else: 
+            else:
                 if len(password) < 6:
                     return Response ({'error': 'Password must be at least 6 characters'})
                 else:
@@ -36,33 +37,24 @@ class SignupView(APIView):
 
                     user.save()
                     return Response({'success': 'User created succesfully'})
-        
+
         else:
             return Response ({'error': 'Passwords do not match'})
 
 
 
 
-class UserAccountView(RetrieveUpdateAPIView):
+class UserAccountView(APIView):
     permission_classes = [permissions.AllowAny]
-    
     parser_classes = [FileUploadParser]
+    queryset = User.objects.all()
 
-    def patch(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
+        user = request.user
         if "file" in request.data:
             file=request.data["file"]
-            user = request.user
             user.profile_pic.save(file.name, file, save=True)
-            file_serializer = PhotoSerializer(user)
-        else:    
-            file_serializer = UserAccountSerializer(data=request.data)
-        
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
+        serializer = UserAccountSerializer(user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
