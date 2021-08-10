@@ -12,7 +12,7 @@ from rest_framework.generics import DestroyAPIView, RetrieveUpdateAPIView
 
 class TripCreate(generics.CreateAPIView):
     queryset = Trip.objects.all()
-    permission_classes = ( IsAuthenticated, )
+    permission_classes = ( TripIsOwnerOrReadOnly, )
     serializer_class = TripCreateSerializer
 
 

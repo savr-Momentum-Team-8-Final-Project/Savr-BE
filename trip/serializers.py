@@ -37,6 +37,9 @@ trip_update_url = HyperlinkedIdentityField(
 
 
 class TripListSerializer(serializers.ModelSerializer):
+    detail_url= trip_detail_url 
+    delete_url = trip_delete_url 
+    edit_url = trip_update_url
     guide = SerializerMethodField()
     class Meta:
         model = Trip

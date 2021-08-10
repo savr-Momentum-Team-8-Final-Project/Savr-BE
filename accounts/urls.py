@@ -1,9 +1,9 @@
 from django.urls import path, include
-from .views import SignupView
+from .views import SignupView, UserAccountView
 
 urlpatterns = [
     path('signup', SignupView.as_view()),
-    
+    path('upload/', UserAccountView.as_view(), name='image_upload'),
 ]
 
 ## signin: http://localhost:8000/auth/token/login
