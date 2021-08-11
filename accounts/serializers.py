@@ -7,5 +7,5 @@ class UserAccountSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "name",
-            "profile_pic"
+            "profile_pic",
         ]
