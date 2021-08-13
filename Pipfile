@@ -13,6 +13,7 @@ psycopg2-binary = "*"
 django-on-heroku = "*"
 gunicorn = "*"
 pillow = "*"
+opencv-python = "*"
 
 [dev-packages]
 

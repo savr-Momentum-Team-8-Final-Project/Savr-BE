@@ -8,6 +8,10 @@ from datetime import date
 class Expense(models.Model):
     expense_title = models.CharField(max_length=100)
     amount = models.IntegerField(default=1)
+    ## upload file start ** 
+    file =  models.FileField(upload_to='expense_create', default = 'file')
+    ###  upload file end ** 
+
     price = models.DecimalField(max_digits=6, decimal_places= 2)
     note = models.TextField(blank=True)
     trip = models.ForeignKey(Trip, on_delete=CASCADE)

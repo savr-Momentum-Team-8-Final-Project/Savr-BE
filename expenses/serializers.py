@@ -11,6 +11,9 @@ class ExpenseCreateSerializer(serializers.ModelSerializer):
         fields = [
             'expense_title',
             'trip', 
+            ### upload receipt start ** 
+            'file',
+            ### upload receipt end ** 
             'amount',
             'price',
             'note',
@@ -31,6 +34,9 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
             'user',
             'trip',
             'expense_title',
+            ### upload receipt start ** 
+            'file',
+            ### upload receipt end ** 
             "amount",
             "price",
             'total_cost',
@@ -83,6 +89,9 @@ class ExpenseListSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'expense_title',
+            ### upload receipt start ** 
+            'file',
+            ### upload receipt end ** 
             'amount',
             'price',
             'total_cost', 

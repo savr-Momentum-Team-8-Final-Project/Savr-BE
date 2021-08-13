@@ -2,3 +2,8 @@ django
 gunicorn
 django-heroku
 requests
+### tesseract start 
+pytesseract
+Pillow
+
+### tesseract end
