@@ -42,6 +42,7 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'trip',
+            'file',
             'expense_title',
             "amount",
             "price",
@@ -95,6 +96,7 @@ class ExpenseListSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'expense_title',
+            'file',
             'amount',
             'price',
             'total_cost', 
@@ -125,6 +127,7 @@ class UpdateExpenseSerializer(serializers.ModelSerializer):
         fields = [
             'expense_title',
             'trip', 
+            'file',
             'amount',
             'price',
             'note',
@@ -146,6 +149,7 @@ class NoLinkExpenseListSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'expense_title',
+            'file',
             'amount',
             'price',
             'total_cost', 
