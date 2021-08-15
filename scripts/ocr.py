@@ -7,11 +7,10 @@ from pytesseract import Output
 import re
 import json
 
-img_path = 'r21.png'
 
-def OcrReceipt(img_path):
+def OcrReceipt(upload):
 
-    img = cv2.imread(img_path)
+    img = cv2.imread(upload)
     ### BGR
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 

@@ -34,6 +34,7 @@ class ExpenseCreateSerializer(serializers.ModelSerializer):
 
 class ExpenseDetailSerializer(serializers.ModelSerializer):
 ### turn users to show name 
+    ### receipt
     user = SerializerMethodField()
     total_cost = SerializerMethodField()
     class Meta:
@@ -56,9 +57,9 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
     def get_user(self,obj):
         return str(obj.trip.guide.name)
 
-
     def get_total_cost(self,obj):
         return obj.amount * obj.price
+
     
 
 
