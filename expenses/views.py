@@ -39,6 +39,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
 from PIL import Image
 from scripts import ocr
+from django.views.decorators.csrf import csrf_exempt
 
 
 #### Create Expense
@@ -48,6 +49,36 @@ class ExpenseCreate(CreateAPIView):
     queryset = Expense.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ExpenseCreateSerializer
+
+#### IS this part neccessarry??? 
+    @csrf_exempt
+    def process_image(request):
+        
+        if request.method == 'POST':
+
+            upload = request.FILES['file']
+            
+            ### make sure it is image
+            try:
+                upload = Image.open(upload)
+                upload.verify()
+
+            except:
+                raise ParseError("Unsupported image type")
+
+            #### I dont know if this is correct or not !!! ***** 
+            content = ocr.OcrReceipt(upload)
+
+            ### show content on detail page .... 
+            ExpenseDetailSerializer.create(content = content)
+            #### I want to save content as json format in detail serializer ***
+
+
+
+            
+
+
+
 
 
 
