@@ -102,6 +102,7 @@ class ExpenseListSerializer(serializers.ModelSerializer):
             'price',
             'total_cost', 
             'category',
+            'date',
             'user',
             'trip', 
             'trip_name',
