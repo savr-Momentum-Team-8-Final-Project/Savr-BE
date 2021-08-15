@@ -3,7 +3,7 @@ from .views import SignupView, UserAccountView
 from django.conf.urls import url
 
 urlpatterns = [
-    path('signup', SignupView.as_view()),
+    path('signup/', SignupView.as_view()),
     path('photo/', UserAccountView.as_view(), name='image_upload'),
 ]
 

@@ -1,10 +1,13 @@
 
 ### receipt upload start ***
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import (
+    FileUploadParser,
+    MultiPartParser, 
+    FormParser,
+)
 from rest_framework import status
-### receipt upload end ***
-
-
+import pytesseract
+from rest_framework.views import APIView
 from rest_framework.generics import (
     ListAPIView, 
     RetrieveAPIView,
@@ -28,52 +31,37 @@ from .serializers import (
     ExpenseDetailSerializer,
     ExpenseListSerializer,
     UpdateExpenseSerializer,
+    ExpenseUploadSerializer,
 )
-
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.response import Response
 
- ### receipt upload start ***
-import pytesseract
-import cv2
-import json
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.exceptions import ParseError
+from PIL import Image
+from scripts import ocr
 
-try:
-    from PIL import Image
-except: 
-    import Image
- ### receipt upload end ***
+### upload receipt *** !!!!
+        
+class UploadReceipt(APIView):
+
+    parser_classes = [FileUploadParser,]
+
+    def put(self, request, *args, **kwargs):
+        file_serializer = ExpenseUploadSerializer(data=request.data)
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #### Create Expense
 class ExpenseCreate(CreateAPIView):
-    
-    ### receipt upload start ***
-    ## form** 
-    form_class = Expense
-
-    parser_classes = (MultiPartParser, FormParser)
-    ### receipt upload end ***
+    parser_classes = [FormParser, MultiPartParser]
 
     queryset = Expense.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ExpenseCreateSerializer
 
-    ### receipt upload start ***
-    # def form_valid(self, form):
-    #     upload = self.request.FILES['file']
-    #     print(type(pytesseract.image_to_string(Image.open(upload))))
-    #     return super().form_valid(form)
-@csrf_exempt
-def process_image(request):
-    if request.method == 'POST':
-        response_data = {}
-        upload = request.FILES['file']
-        content = pytesseract.image_to_string(Image.open(upload))
-        response_data['content'] = content
-
-        return JsonResponse(response_data)
-
-    ### receipt upload start ***
 
 
 ###  ** list answers ---- and add/create
