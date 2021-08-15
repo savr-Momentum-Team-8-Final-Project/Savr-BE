@@ -40,19 +40,6 @@ from rest_framework.exceptions import ParseError
 from PIL import Image
 from scripts import ocr
 
-### upload receipt *** !!!!
-        
-class UploadReceipt(APIView):
-
-    parser_classes = [FileUploadParser,]
-
-    def put(self, request, *args, **kwargs):
-        file_serializer = ExpenseUploadSerializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #### Create Expense
 class ExpenseCreate(CreateAPIView):
