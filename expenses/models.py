@@ -6,9 +6,13 @@ from datetime import date
 
 # Create your models here.
 class Expense(models.Model):
-    expense_title = models.CharField(max_length=100)
+    expense_title = models.CharField(max_length=100, null = True)
     amount = models.IntegerField(default=1)
-    price = models.DecimalField(max_digits=6, decimal_places= 2)
+    ## upload file start ** 
+    file =  models.FileField(null=True, blank=True,)
+    ###  upload file end ** 
+
+    price = models.DecimalField(max_digits=6, decimal_places= 2, null=True)
     note = models.TextField(blank=True)
     trip = models.ForeignKey(Trip, on_delete=CASCADE)
     date = models.DateField(blank=True, null=True)
@@ -29,3 +33,7 @@ class Expense(models.Model):
 
     def __str__(self):
         return self.expense_title
+
+### this is for file upload
+    def __str__(self):
+        return self.file.name

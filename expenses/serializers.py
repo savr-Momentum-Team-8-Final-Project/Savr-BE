@@ -4,6 +4,17 @@ from rest_framework.serializers import HyperlinkedIdentityField, SerializerMetho
 
 from .models import Expense
 
+
+class ExpenseUploadSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Expense
+        fields = [
+            'trip',
+            'file',
+        ]
+
+
 class ExpenseCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -11,6 +22,7 @@ class ExpenseCreateSerializer(serializers.ModelSerializer):
         fields = [
             'expense_title',
             'trip', 
+            'file',
             'amount',
             'price',
             'note',

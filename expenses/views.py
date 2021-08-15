@@ -1,3 +1,13 @@
+
+### receipt upload start ***
+from rest_framework.parsers import (
+    FileUploadParser,
+    MultiPartParser, 
+    FormParser,
+)
+from rest_framework import status
+import pytesseract
+from rest_framework.views import APIView
 from rest_framework.generics import (
     ListAPIView, 
     RetrieveAPIView,
@@ -21,16 +31,24 @@ from .serializers import (
     ExpenseDetailSerializer,
     ExpenseListSerializer,
     UpdateExpenseSerializer,
+    ExpenseUploadSerializer,
 )
-
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.response import Response
+
+from rest_framework.exceptions import ParseError
+from PIL import Image
+from scripts import ocr
+
 
 #### Create Expense
 class ExpenseCreate(CreateAPIView):
-    queryset = Expense.objects.all()
+    parser_classes = [FormParser, MultiPartParser]
 
+    queryset = Expense.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ExpenseCreateSerializer
+
 
 
 ###  ** list answers ---- and add/create
@@ -63,3 +81,6 @@ class ExpenseUpdate(RetrieveUpdateAPIView):
     queryset = Expense.objects.all()
     serializer_class = UpdateExpenseSerializer
     permission_classes = [IsOwnerOrReadOnly]
+
+
+
