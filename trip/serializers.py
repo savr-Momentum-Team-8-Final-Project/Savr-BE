@@ -17,7 +17,8 @@ class TripCreateSerializer(serializers.ModelSerializer):
             'start_date',
             'end_date',
             'guide',
-            'budget'
+            'budget',
+            'c_photo',
             ]
 
 trip_detail_url = HyperlinkedIdentityField(
@@ -79,6 +80,7 @@ class TripDetailSerialzier(serializers.ModelSerializer):
             'guide',
             'budget',
             'expenses',
+            'c_photo',
         ]
 
     def get_guide(self,obj):
@@ -88,11 +90,6 @@ class TripDetailSerialzier(serializers.ModelSerializer):
         e__qs = Expense.objects.filter(trip_id=obj.id)
         expenses = NoLinkExpenseListSerializer(e__qs, many=True).data
         return expenses
-
-
-
-
-
 
 
 
