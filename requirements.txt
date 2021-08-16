@@ -5,5 +5,4 @@ requests
 ### tesseract start 
 pytesseract
 Pillow
-
 ### tesseract end
