@@ -118,7 +118,7 @@ class ExpenseListSerializer(serializers.ModelSerializer):
         return str(obj.trip.trip_title)
 
     def get_total_cost(self,obj):
-        return obj.amount * obj.price
+        return float(obj.amount * obj.price)
 
 
 
