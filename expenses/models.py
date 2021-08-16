@@ -33,7 +33,3 @@ class Expense(models.Model):
 
     def __str__(self):
         return self.expense_title
-
-### this is for file upload
-    def __str__(self):
-        return self.file.name
