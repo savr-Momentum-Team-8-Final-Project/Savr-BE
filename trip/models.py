@@ -13,7 +13,10 @@ class Trip(models.Model):
     end_date = models.DateField()
     guide = models.ForeignKey(UserAccount, on_delete=CASCADE)
     budget = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    c_photo = models.FileField(upload_to='media/', null=True,)
     
     def __str__(self):
         return self.trip_title
+
+
 
