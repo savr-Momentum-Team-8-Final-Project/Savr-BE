@@ -88,7 +88,6 @@ class ExpenseList(ListAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     # queryset = Book.objects.all()
     serializer_class = ExpenseListSerializer
-    ### pagination 
 
 
 

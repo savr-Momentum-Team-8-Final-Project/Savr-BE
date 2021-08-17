@@ -23,7 +23,6 @@ class ExpenseCreateSerializer(serializers.ModelSerializer):
             'expense_title',
             'trip', 
             'file',
-            'amount',
             'price',
             'note',
             'date',
@@ -36,7 +35,6 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
 ### turn users to show name 
     ### receipt
     user = SerializerMethodField()
-    total_cost = SerializerMethodField()
     class Meta:
         model = Expense
         fields = [
@@ -45,9 +43,7 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
             'trip',
             'file',
             'expense_title',
-            "amount",
             "price",
-            'total_cost',
             'category',
             'note',
             'date',
@@ -56,9 +52,6 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
     
     def get_user(self,obj):
         return str(obj.trip.guide.name)
-
-    def get_total_cost(self,obj):
-        return obj.amount * obj.price
 
     
 
@@ -89,7 +82,6 @@ class ExpenseListSerializer(serializers.ModelSerializer):
     edit_url = expense_edit_url
     user = SerializerMethodField()
     trip_name = SerializerMethodField()
-    total_cost = SerializerMethodField()
 
     
     class Meta:
@@ -98,9 +90,7 @@ class ExpenseListSerializer(serializers.ModelSerializer):
             'id',
             'expense_title',
             'file',
-            'amount',
             'price',
-            'total_cost', 
             'category',
             'date',
             'user',
@@ -117,9 +107,6 @@ class ExpenseListSerializer(serializers.ModelSerializer):
     def get_trip_name(self,obj):
         return str(obj.trip.trip_title)
 
-    def get_total_cost(self,obj):
-        return float(obj.amount * obj.price)
-
 
 
 
@@ -130,7 +117,6 @@ class UpdateExpenseSerializer(serializers.ModelSerializer):
             'expense_title',
             'trip', 
             'file',
-            'amount',
             'price',
             'note',
             'date',
@@ -144,7 +130,6 @@ class NoLinkExpenseListSerializer(serializers.ModelSerializer):
 
     user = SerializerMethodField()
     trip_name = SerializerMethodField()
-    total_cost = SerializerMethodField()
     
     class Meta:
         model = Expense
@@ -152,13 +137,12 @@ class NoLinkExpenseListSerializer(serializers.ModelSerializer):
             'id',
             'expense_title',
             'file',
-            'amount',
             'price',
-            'total_cost', 
             'category',
             'user',
             'trip', 
             'trip_name',
+            
         ]
 
     def get_user(self,obj):
@@ -166,6 +150,3 @@ class NoLinkExpenseListSerializer(serializers.ModelSerializer):
     
     def get_trip_name(self,obj):
         return str(obj.trip.trip_title)
-
-    def get_total_cost(self,obj):
-        return obj.amount * obj.price
