@@ -7,7 +7,6 @@ from datetime import date
 # Create your models here.
 class Expense(models.Model):
     expense_title = models.CharField(max_length=100, null = True)
-    amount = models.IntegerField(default=1)
     ## upload file start ** 
     file =  models.FileField(upload_to='media/', null=True, blank=True,)
     ###  upload file end ** 
@@ -29,6 +28,7 @@ class Expense(models.Model):
         max_length=10,
         choices=CATEGORY_CHOICES
     )
+
 
 
     def __str__(self):

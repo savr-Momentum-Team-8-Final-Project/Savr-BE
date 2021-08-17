@@ -44,4 +44,3 @@ class TripUpdate(RetrieveUpdateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripUpdateSerializer
     permission_classes =  ( TripIsOwnerOrReadOnly, )
-

@@ -1,9 +1,10 @@
+from django.db.models.expressions import Value
 from expenses.serializers import NoLinkExpenseListSerializer
 from rest_framework import serializers
 from trip.models import Trip
 from expenses.models import Expense
 from rest_framework.serializers import HyperlinkedIdentityField, SerializerMethodField
-
+from django.db.models import Sum,Avg,Max,Min
 
 
 class TripCreateSerializer(serializers.ModelSerializer):
@@ -67,6 +68,11 @@ class TripUpdateSerializer(serializers.ModelSerializer):
 class TripDetailSerialzier(serializers.ModelSerializer):
     guide = SerializerMethodField()
     expenses = SerializerMethodField()
+    total_expenses = SerializerMethodField()
+    average_expenses = SerializerMethodField()
+    max_expense = SerializerMethodField()
+    budget_left = SerializerMethodField()
+    ### this can be negative
     
     class Meta:
         model = Trip
@@ -79,6 +85,10 @@ class TripDetailSerialzier(serializers.ModelSerializer):
             'end_date',
             'guide',
             'budget',
+            'budget_left',
+            'total_expenses',
+            'average_expenses',
+            'max_expense',
             'expenses',
             'c_photo',
         ]
@@ -90,6 +100,32 @@ class TripDetailSerialzier(serializers.ModelSerializer):
         e__qs = Expense.objects.filter(trip_id=obj.id)
         expenses = NoLinkExpenseListSerializer(e__qs, many=True).data
         return expenses
+
+    def get_total_expenses(self,obj):
+        e__qs = Expense.objects.filter(trip_id=obj.id)
+
+        total_expenses = e__qs.aggregate(Sum('price'))
+        return total_expenses
+
+    def get_average_expenses(self,obj):
+        e__qs = Expense.objects.filter(trip_id=obj.id)
+
+        average_expenses = e__qs.aggregate(Avg('price'))
+        return average_expenses
+
+    def get_max_expense(self,obj):
+        e__qs = Expense.objects.filter(trip_id=obj.id)
+
+        max_expense = e__qs.aggregate(Max('price'))
+        return max_expense
+
+
+    def get_budget_left(self,obj):
+        e__qs = Expense.objects.filter(trip_id=obj.id)
+        total_expenses = e__qs.aggregate(Sum('price'))
+        budget = obj.budget
+        return budget-total_expenses.get('price__sum')
+
 
 
 

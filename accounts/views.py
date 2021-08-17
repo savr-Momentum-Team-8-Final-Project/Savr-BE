@@ -10,8 +10,11 @@ from rest_framework.parsers import (
 )
 
 from rest_framework import status
-from .serializers import UserAccountSerializer
+from .serializers import UserAccountSerializer, UserSummarySerializer
 from .models import UserAccount
+
+from rest_framework.generics import (
+    ListAPIView, )
 
 
 
@@ -63,5 +66,8 @@ class UserAccountView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-
+class UserList(ListAPIView):
+    queryset = User.objects.all()
+    # queryset = Book.objects.all()
+    serializer_class = UserSummarySerializer
 
