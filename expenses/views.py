@@ -32,6 +32,7 @@ from .serializers import (
     ExpenseListSerializer,
     UpdateExpenseSerializer,
     ExpenseUploadSerializer,
+    UploadReceiptSerializer
 )
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.response import Response
@@ -44,41 +45,41 @@ from django.views.decorators.csrf import csrf_exempt
 
 #### Create Expense
 class ExpenseCreate(CreateAPIView):
-    parser_classes = [FormParser, MultiPartParser]
-
     queryset = Expense.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ExpenseCreateSerializer
 
-#### IS this part neccessarry??? 
-    @csrf_exempt
-    def process_image(request):
+   
+#### upload photo is working 
+class ReceiptView(APIView):
+## this part is working !!
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    parser_classes = [FileUploadParser]
+
+    def get(self,request, *args, **kwargs):
+        expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
+        serializer = UploadReceiptSerializer(expense)
+        return Response(serializer.data)
+    
+
+    def post(self, request, *args, **kwargs):
+        serializer = UploadReceiptSerializer(data=request.data)
+        expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
+        if "file" in request.data:
+            file=request.data["file"]
+            expense.file.save(file.name, file, save=True)
+            
+            content = ocr.OcrReceipt(expense.file)
+            # serializer.is_valid(raise_exception=True)
+            # serializer.save(content = content)
         
-        if request.method == 'POST':
-
-            upload = request.FILES['file']
-            
-            ### make sure it is image
-            try:
-                upload = Image.open(upload)
-                upload.verify()
-
-            except:
-                raise ParseError("Unsupported image type")
-
-            #### I dont know if this is correct or not !!! ***** 
-            content = ocr.OcrReceipt(upload)
-
-            ### show content on detail page .... 
-            ExpenseDetailSerializer.create(content = content)
-            #### I want to save content as json format in detail serializer ***
-
-
-
-            
-
-
-
+    
+        # serializer = UploadReceiptSerializer(expense, content = content)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(content = content)
+        # serializer = UploadReceiptSerializer(expense)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 

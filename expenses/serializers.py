@@ -22,14 +22,21 @@ class ExpenseCreateSerializer(serializers.ModelSerializer):
         fields = [
             'expense_title',
             'trip', 
-            'file',
             'price',
             'note',
             'date',
             'category',
         ]
 
-        #### user is read only!! 
+
+class UploadReceiptSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Expense
+        fields = [
+            'file',
+            'content',
+        ]
 
 class ExpenseDetailSerializer(serializers.ModelSerializer):
 ### turn users to show name 

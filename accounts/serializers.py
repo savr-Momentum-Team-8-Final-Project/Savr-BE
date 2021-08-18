@@ -24,6 +24,12 @@ class UserSummarySerializer(serializers.ModelSerializer):
     total_budget = SerializerMethodField()
     average_budget = SerializerMethodField()
     trip_count = SerializerMethodField()
+    alltrip_lodging = SerializerMethodField()
+    alltrip_food = SerializerMethodField()
+    alltrip_trans = SerializerMethodField()
+    alltrip_ticket = SerializerMethodField()
+    alltrip_grocery = SerializerMethodField()
+    alltrip_other = SerializerMethodField()
     class Meta():
         model = UserAccount
         fields = [
@@ -36,6 +42,12 @@ class UserSummarySerializer(serializers.ModelSerializer):
             'total_budget',
             'average_budget',
             'trip_count',
+            "alltrip_lodging",
+            "alltrip_food",
+            "alltrip_trans",
+            "alltrip_ticket",
+            "alltrip_grocery",
+            "alltrip_other",
         ]
 
     def get_alltrip_expenses(self,obj):
@@ -81,3 +93,12 @@ class UserSummarySerializer(serializers.ModelSerializer):
         ### I like this part!!!
         b__qs = Trip.objects.filter(guide_id=obj.id)
         return b__qs.count()
+
+
+
+    def get_lodging_expenses(self,obj):
+        l__qs = Expense.objects.filter(trip_id=obj.id).filter(category="lodging")
+        lodging_expenses = l__qs.aggregate(Sum('price'))
+        return lodging_expenses
+
+    

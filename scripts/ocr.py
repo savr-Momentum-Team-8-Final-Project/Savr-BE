@@ -7,9 +7,14 @@ import re
 import json
 
 
-def OcrReceipt(upload):
+def OcrReceipt(file):
 
-    img = cv2.imread(upload)
+    file= file.open()
+    img = cv2.imread(file.name)
+    file.close()
+
+    # img = cv2.imread('r21.png')
+    # img = cv2.imread('https://savrbeteam.s3.amazonaws.com/media/r10.png')
     ### BGR
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -66,5 +71,3 @@ def OcrReceipt(upload):
     receipt_json = json.dumps(receipt_ocr)
 
     return receipt_json
-
-# print(OcrReceipt('r21.png'))
