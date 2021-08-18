@@ -127,6 +127,16 @@ class TripDetailSerialzier(serializers.ModelSerializer):
         return budget-total_expenses.get('price__sum')
 
 
+class TripUploadSerializer(serializers.ModelSerializer):
+
+    class Meta():
+        model = Trip
+        fields = [
+            "c_photo",
+        ]
+
+
+
 
 
 
