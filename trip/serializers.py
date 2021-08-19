@@ -4,7 +4,10 @@ from rest_framework import serializers
 from trip.models import Trip
 from expenses.models import Expense
 from rest_framework.serializers import HyperlinkedIdentityField, SerializerMethodField
-from django.db.models import Sum,Avg,Max,Min
+from django.db.models import Sum,Avg,Max,Min,Value
+from django.db.models.functions import Coalesce
+from django.db.models import DecimalField
+
 
 
 class TripCreateSerializer(serializers.ModelSerializer):
@@ -135,9 +138,9 @@ class TripDetailSerialzier(serializers.ModelSerializer):
 
     def get_budget_left(self,obj):
         e__qs = Expense.objects.filter(trip_id=obj.id)
-        total_expenses = e__qs.aggregate(Sum('price'))
+        total_expenses = e__qs.aggregate(sum=(Coalesce(Sum('price'), Value(0), output_field=DecimalField())))
         budget = obj.budget
-        return budget-total_expenses.get('price__sum')
+        return budget-total_expenses['sum']
 
     
     def get_lodging_expenses(self,obj):
