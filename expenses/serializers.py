@@ -51,6 +51,7 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
             'user',
             'trip',
             'file',
+            'content',
             'expense_title',
             "price",
             'category',

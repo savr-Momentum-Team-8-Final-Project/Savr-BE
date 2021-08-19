@@ -56,12 +56,6 @@ class ReceiptView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     parser_classes = [FileUploadParser]
 
-    def get(self,request, *args, **kwargs):
-        expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
-        serializer = UploadReceiptSerializer(expense)
-        return Response(serializer.data)
-    
-
     def post(self, request, *args, **kwargs):
         expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
         # serializer = UploadReceiptSerializer(data=request.data)
@@ -78,6 +72,20 @@ class ReceiptView(APIView):
 
         serializer = UploadReceiptSerializer(expense)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def get(self,request, *args, **kwargs):
+        expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
+        if "file" in request.data:
+            file=request.data["file"]
+            expense.file.save(file.name, file, save=True)
+            pil_img = Image.open(expense.file)
+            ### img to array
+            img = np.array(pil_img)
+            
+            expense.content = ocr.OcrReceipt(img) 
+        serializer = UploadReceiptSerializer(expense)
+
+        return Response(serializer.data)
 
 
 

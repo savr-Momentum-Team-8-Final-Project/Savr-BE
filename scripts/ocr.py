@@ -73,4 +73,6 @@ def OcrReceipt(img):
 
     receipt_json = json.dumps(receipt_ocr)
 
-    return receipt_json
+    return receipt_ocr
+
+    # return receipt_json
