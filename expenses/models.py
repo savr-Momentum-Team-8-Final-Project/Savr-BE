@@ -30,8 +30,3 @@ class Expense(models.Model):
         max_length=10,
         choices=CATEGORY_CHOICES
     )
-
-
-
-    def __str__(self):
-        return self.expense_title

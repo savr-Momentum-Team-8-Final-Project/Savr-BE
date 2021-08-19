@@ -96,9 +96,40 @@ class UserSummarySerializer(serializers.ModelSerializer):
 
 
 
-    def get_lodging_expenses(self,obj):
-        l__qs = Expense.objects.filter(trip_id=obj.id).filter(category="lodging")
-        lodging_expenses = l__qs.aggregate(Sum('price'))
-        return lodging_expenses
+    def get_alltrip_lodging(self,obj):
+        l__qs = Expense.objects.filter(trip__guide_id=obj.id).filter(category="lodging")
+        alltrip_lodging = l__qs.aggregate(Sum('price'))
+        return alltrip_lodging
+    
+    def get_alltrip_food(self,obj):
+        f__qs = Expense.objects.filter(trip__guide_id=obj.id).filter(category="food")
+        alltrip_food= f__qs.aggregate(Sum('price'))
+        return alltrip_food
+
+
+
+    def get_alltrip_trans(self,obj):
+        t__qs = Expense.objects.filter(trip__guide_id=obj.id).filter(category="trans")
+        alltrip_trans= t__qs.aggregate(Sum('price'))
+        return alltrip_trans
+
+
+
+    def get_alltrip_ticket(self,obj):
+        t__qs = Expense.objects.filter(trip__guide_id=obj.id).filter(category="ticket")
+        alltrip_ticket= t__qs.aggregate(Sum('price'))
+        return alltrip_ticket
+
+
+    def get_alltrip_grocery(self,obj):
+        g__qs = Expense.objects.filter(trip__guide_id=obj.id).filter(category="grocery")
+        alltrip_grocery= g__qs.aggregate(Sum('price'))
+        return alltrip_grocery
+
+
+    def get_alltrip_other(self,obj):
+        g__qs = Expense.objects.filter(trip__guide_id=obj.id).filter(category="other")
+        alltrip_other= g__qs.aggregate(Sum('price'))
+        return alltrip_other
 
     

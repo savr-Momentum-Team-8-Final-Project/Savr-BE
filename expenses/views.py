@@ -39,9 +39,9 @@ from rest_framework.response import Response
 
 from rest_framework.exceptions import ParseError
 from PIL import Image
+import numpy as np
 from scripts import ocr
 from django.views.decorators.csrf import csrf_exempt
-
 
 #### Create Expense
 class ExpenseCreate(CreateAPIView):
@@ -63,23 +63,22 @@ class ReceiptView(APIView):
     
 
     def post(self, request, *args, **kwargs):
-        serializer = UploadReceiptSerializer(data=request.data)
         expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
+        # serializer = UploadReceiptSerializer(data=request.data)
+        
+        
         if "file" in request.data:
             file=request.data["file"]
             expense.file.save(file.name, file, save=True)
+            pil_img = Image.open(expense.file)
+            ### img to array
+            img = np.array(pil_img)
             
-            content = ocr.OcrReceipt(expense.file)
-            # serializer.is_valid(raise_exception=True)
-            # serializer.save(content = content)
-        
-    
-        # serializer = UploadReceiptSerializer(expense, content = content)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(content = content)
-        # serializer = UploadReceiptSerializer(expense)
-        
+            expense.content = ocr.OcrReceipt(img)      
+
+        serializer = UploadReceiptSerializer(expense)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 
