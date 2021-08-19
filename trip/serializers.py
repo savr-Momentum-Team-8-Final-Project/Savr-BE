@@ -72,6 +72,13 @@ class TripDetailSerialzier(serializers.ModelSerializer):
     average_expenses = SerializerMethodField()
     max_expense = SerializerMethodField()
     budget_left = SerializerMethodField()
+    lodging_expenses = SerializerMethodField()
+    food_expenses = SerializerMethodField()
+    trans_expenses = SerializerMethodField()
+    ticket_expenses = SerializerMethodField()
+    grocery_expenses = SerializerMethodField()
+    other_expenses = SerializerMethodField()
+
     ### this can be negative
     
     class Meta:
@@ -89,6 +96,12 @@ class TripDetailSerialzier(serializers.ModelSerializer):
             'total_expenses',
             'average_expenses',
             'max_expense',
+            'lodging_expenses',
+            'food_expenses',
+            'trans_expenses',
+            'ticket_expenses',
+            'grocery_expenses',
+            'other_expenses',
             'expenses',
             'c_photo',
         ]
@@ -135,6 +148,41 @@ class TripUploadSerializer(serializers.ModelSerializer):
             "c_photo",
         ]
 
+
+
+
+    def get_lodging_expenses(self,obj):
+        l__qs = Expense.objects.filter(trip_id=obj.id).filter(category="lodging")
+        lodging_expenses = l__qs.aggregate(Sum('price'))
+        return lodging_expenses
+
+    
+    def get_food_expenses(self,obj):
+        f__qs = Expense.objects.filter(trip_id=obj.id).filter(category="food")
+        food_expenses = f__qs.aggregate(Sum('price'))
+        return food_expenses
+
+
+    def get_trans_expenses(self,obj):
+        t__qs = Expense.objects.filter(trip_id=obj.id).filter(category="trans")
+        trans_expenses = t__qs.aggregate(Sum('price'))
+        return trans_expenses
+
+    def get_ticket_expenses(self,obj):
+        t__qs = Expense.objects.filter(trip_id=obj.id).filter(category="ticket")
+        ticket_expenses = t__qs.aggregate(Sum('price'))
+        return ticket_expenses
+
+    def get_grocery_expenses(self,obj):
+        g__qs = Expense.objects.filter(trip_id=obj.id).filter(category="grocery")
+        grocery_expenses = g__qs.aggregate(Sum('price'))
+        return grocery_expenses
+
+
+    def get_other_expenses(self,obj):
+        o__qs = Expense.objects.filter(trip_id=obj.id).filter(category="other")
+        other_expenses = o__qs.aggregate(Sum('price'))
+        return other_expenses
 
 
 

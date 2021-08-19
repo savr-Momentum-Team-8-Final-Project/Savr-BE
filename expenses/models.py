@@ -9,6 +9,8 @@ class Expense(models.Model):
     expense_title = models.CharField(max_length=100, null = True)
     ## upload file start ** 
     file =  models.FileField(upload_to='media/', null=True, blank=True,)
+
+    content = models.TextField(blank=True)
     ###  upload file end ** 
 
     price = models.DecimalField(max_digits=6, decimal_places= 2, null=True)
@@ -28,8 +30,3 @@ class Expense(models.Model):
         max_length=10,
         choices=CATEGORY_CHOICES
     )
-
-
-
-    def __str__(self):
-        return self.expense_title

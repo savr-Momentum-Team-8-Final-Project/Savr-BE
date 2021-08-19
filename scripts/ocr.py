@@ -2,14 +2,22 @@ import cv2
 
 import pytesseract
 from pytesseract import Output
+import numpy as np
 
 import re
 import json
 
+from PIL import Image
 
-def OcrReceipt(upload):
 
-    img = cv2.imread(upload)
+def OcrReceipt(img):
+    # img= img.open()
+    # img = cv2.imread(img)
+    # <FieldFile: media/r10_kprL53n.png>
+    # file.close()
+
+    # img = cv2.imread('r21.png')
+    # img = cv2.imread('https://savrbeteam.s3.amazonaws.com/media/r10.png')
     ### BGR
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -66,5 +74,3 @@ def OcrReceipt(upload):
     receipt_json = json.dumps(receipt_ocr)
 
     return receipt_json
-
-# print(OcrReceipt('r21.png'))
