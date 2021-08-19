@@ -139,18 +139,7 @@ class TripDetailSerialzier(serializers.ModelSerializer):
         budget = obj.budget
         return budget-total_expenses.get('price__sum')
 
-
-class TripUploadSerializer(serializers.ModelSerializer):
-
-    class Meta():
-        model = Trip
-        fields = [
-            "c_photo",
-        ]
-
-
-
-
+    
     def get_lodging_expenses(self,obj):
         l__qs = Expense.objects.filter(trip_id=obj.id).filter(category="lodging")
         lodging_expenses = l__qs.aggregate(Sum('price'))
@@ -183,6 +172,20 @@ class TripUploadSerializer(serializers.ModelSerializer):
         o__qs = Expense.objects.filter(trip_id=obj.id).filter(category="other")
         other_expenses = o__qs.aggregate(Sum('price'))
         return other_expenses
+
+
+class TripUploadSerializer(serializers.ModelSerializer):
+
+    class Meta():
+        model = Trip
+        fields = [
+            "c_photo",
+        ]
+
+
+
+
+    
 
 
 
