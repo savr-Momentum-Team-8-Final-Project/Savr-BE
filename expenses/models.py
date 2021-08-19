@@ -13,7 +13,7 @@ class Expense(models.Model):
     content = models.TextField(blank=True)
     ###  upload file end ** 
 
-    price = models.DecimalField(max_digits=6, decimal_places= 2, null=True)
+    price = models.DecimalField(max_digits=6, decimal_places= 2, null=True, default=0.00)
     note = models.TextField(blank=True)
     trip = models.ForeignKey(Trip, on_delete=CASCADE)
     date = models.DateField(blank=True, null=True)

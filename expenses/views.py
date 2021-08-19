@@ -69,9 +69,15 @@ class ReceiptView(APIView):
             img = np.array(pil_img)
             
             expense.content = ocr.OcrReceipt(img)      
+            expense.save()
 
         serializer = UploadReceiptSerializer(expense)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+
+        
+        
+        
 
     def get(self,request, *args, **kwargs):
         expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
