@@ -8,6 +8,7 @@ import re
 import json
 
 from PIL import Image
+from datetime import datetime
 
 
 def OcrReceipt(img):
@@ -47,6 +48,7 @@ def OcrReceipt(img):
             if "/" in item:
                 date.append(item)
         date = date[0]
+        
     else:
         date = []
 
@@ -71,8 +73,9 @@ def OcrReceipt(img):
     receipt_ocr['vender'] = vender_name
     receipt_ocr['date'] = date
 
-    receipt_json = json.dumps(receipt_ocr)
+    # receipt_json = json.dumps(receipt_ocr)
 
     return receipt_ocr
+
 
     # return receipt_json
