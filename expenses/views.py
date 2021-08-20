@@ -79,19 +79,19 @@ class ReceiptView(APIView):
         
         
 
-    # def get(self,request, *args, **kwargs):
-    #     expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
-    #     if "file" in request.data:
-    #         file=request.data["file"]
-    #         expense.file.save(file.name, file, save=True)
-    #         pil_img = Image.open(expense.file)
-    #         ### img to array
-    #         img = np.array(pil_img)
+    def get(self,request, *args, **kwargs):
+        expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
+        if "file" in request.data:
+            file=request.data["file"]
+            expense.file.save(file.name, file, save=True)
+            pil_img = Image.open(expense.file)
+            ### img to array
+            img = np.array(pil_img)
             
-    #         expense.content = ocr.OcrReceipt(img) 
-    #     serializer = UploadReceiptSerializer(expense)
+            expense.content = ocr.OcrReceipt(img) 
+        serializer = UploadReceiptSerializer(expense)
 
-    #     return Response(serializer.data)
+        return Response(serializer.data)
 
 
 

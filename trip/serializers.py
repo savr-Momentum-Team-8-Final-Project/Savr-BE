@@ -62,6 +62,7 @@ class TripUpdateSerializer(serializers.ModelSerializer):
             'state',
             'start_date',
             'end_date',
+            'guide',
             'budget',
         ]
 
