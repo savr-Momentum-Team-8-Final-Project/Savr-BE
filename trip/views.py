@@ -9,7 +9,7 @@ from trip.models import Trip
 from trip.serializers import TripCreateSerializer, TripListSerializer, TripDetailSerialzier, TripUpdateSerializer, TripUploadSerializer
 from rest_framework import generics
 from rest_framework import filters
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.generics import DestroyAPIView, RetrieveUpdateAPIView, get_object_or_404
 from rest_framework.views import APIView 
 from rest_framework.parsers import FileUploadParser, FormParser, MultiPartParser
@@ -19,7 +19,7 @@ from rest_framework.parsers import FileUploadParser, FormParser, MultiPartParser
 
 class TripCreate(generics.CreateAPIView):
     queryset = Trip.objects.all()
-    permission_classes = ( TripIsOwnerOrReadOnly, )
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = TripCreateSerializer
     
 
@@ -27,14 +27,14 @@ class TripCreate(generics.CreateAPIView):
 class TripList(generics.ListAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripListSerializer
-    permission_classes = ( AllowAny, )
+    permission_classes = [TripIsOwnerOrReadOnly]
     filter_backends = (filters.SearchFilter, filters.OrderingFilter)
     search_fields = [ 'trip_title', 'city', 'state,' ]
     
 
 class TripDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Trip.objects.all()
-    permission_classes = ( TripIsOwnerOrReadOnly, )
+    permission_classes = [TripIsOwnerOrReadOnly]
     serializer_class = TripDetailSerialzier
     
 
@@ -42,15 +42,15 @@ class TripDetail(generics.RetrieveUpdateDestroyAPIView):
 class TripDelete(DestroyAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripCreateSerializer
-    permission_classes = ( TripIsOwnerOrReadOnly, )
+    permission_classes = [TripIsOwnerOrReadOnly]
 
 class TripUpdate(RetrieveUpdateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripUpdateSerializer
-    permission_classes =  ( TripIsOwnerOrReadOnly, )
+    permission_classes = [TripIsOwnerOrReadOnly]
 
 class TripUploadView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [TripIsOwnerOrReadOnly]
     parser_classes = [FileUploadParser]
     
     def post(self, request, *args, **kwargs):
