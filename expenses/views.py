@@ -46,7 +46,7 @@ from django.views.decorators.csrf import csrf_exempt
 #### Create Expense
 class ExpenseCreate(CreateAPIView):
     queryset = Expense.objects.all()
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ExpenseCreateSerializer
 
    
