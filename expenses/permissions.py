@@ -8,4 +8,4 @@ class IsOwnerOrReadOnly(BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return obj.trip_id.guide_id == request.user
+        return request.user == obj.trip.guide
