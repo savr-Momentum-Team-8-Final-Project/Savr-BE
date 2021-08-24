@@ -53,7 +53,7 @@ class ExpenseCreate(CreateAPIView):
 #### upload photo is working 
 class ReceiptView(APIView):
 ## this part is working !!
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     parser_classes = [MultiPartParser,FormParser]
 
     def post(self, request, *args, **kwargs):
