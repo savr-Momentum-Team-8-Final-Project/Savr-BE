@@ -54,7 +54,7 @@ class ExpenseCreate(CreateAPIView):
 class ReceiptView(APIView):
 ## this part is working !!
     permission_classes = [IsAuthenticatedOrReadOnly]
-    parser_classes = [FileUploadParser]
+    parser_classes = [MultiPartParser,FormParser]
 
     def post(self, request, *args, **kwargs):
         expense = get_object_or_404(Expense.objects.all(),pk=self.kwargs['pk'])
